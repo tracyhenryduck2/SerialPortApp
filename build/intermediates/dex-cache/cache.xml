@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/st/Documents/SerailPortApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/st/Documents/SerailPortApp/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-22.2.1_ef4cc2b681a1a09fa567e332d3894330335322eb.jar" />
+    </item>
+    <item
+        jar="/Users/st/Documents/SerailPortApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/st/Documents/SerailPortApp/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-22.2.1_2aebd08a1496f63dbe4feb3ad6d6bc18e0dffd8d.jar" />
+    </item>
+    <item
+        jar="/Users/st/Documents/SerailPortApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/st/Documents/SerailPortApp/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1_333e1971ad1a3098e973fc0fc2f2b0f75bb051d0.jar" />
+    </item>
+    <item
+        jar="/Users/st/Documents/SerailPortApp/app/build/intermediates/exploded-aar/SerailPortApp/seriallibrary/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="284470dea8c7f04af98275fa4d383db851607f8f">
+        <dex dex="/Users/st/Documents/SerailPortApp/app/build/intermediates/pre-dexed/debug/SerailPortApp-seriallibrary-unspecified_b1ab0d8ee81f86e7ad77a82be38fbce0746dbdf3.jar" />
+    </item>
+    <item
+        jar="/Users/st/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/st/Documents/SerailPortApp/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1_2d0c80462d2fee1f51aca10efcf1886c449cb87f.jar" />
+    </item>
+
+</items>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SerialPortApp</string>
+    <string name="refreshing">Refreshing...</string>
+</resources>
