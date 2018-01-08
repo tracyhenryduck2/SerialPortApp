@@ -11,16 +11,15 @@ import com.siterwell.seriallibrary.R;
 public enum Errcode {
     ERROR_NORMAL(0,R.string.normal),
     ERROR_FUNCTION(1,R.string.illegal_function),//非法功能
-    ERROR_ADDRESS(2,R.string.illegal_address),//非法数据地址
-    ERROR_VALUE(3,R.string.illegal_data),  //非法数据值
+    ERROR_READ_COIL_ADDRESS(2,R.string.illegal_address),//非法线圈地址
+    ERROR_READ_REGISTER_ADDRESS(2,R.string.illegal_address),//非法寄存器地址
+    ERROR_READ_COIL_COUNT(3,R.string.illegal_coil_count),  //非法线圈数量
+    ERROR_READ_REGISTER_COUNT(3,R.string.illegal_coil_count),  //非法寄存器数量
     ERROR_SLAVE(4,R.string.slave_error),  //从机故障
-
-    //上面四种是从错误码中接收到的上位机自身的错误
-
-    ERROR_RECEIVE_DATALENGTH(5,R.string.illegal_data_length),//数据长度有误
-    ERROR_RECEIVE_ADDRESS(6,R.string.illegal_data_address),   //数据地址有误
-    ERROR_RECEIVE_FUNCTION(7,R.string.illegal_function_code),  //功能码有误
-    ERROR_RECEIVE_CRC(8,R.string.illegal_crc);       //CRC校验错误
+    ERROR_RECEIVE_DATALENGTH(5,R.string.illegal_data_length),//非法数据
+    ERROR_WRITE_COIL_VALUE(6,R.string.illegal_coil_value),//非法线圈写入值
+    ERROR_WRITE_REGISTER_VALUE(6,R.string.illegal_register_value),//非法寄存器写入值
+    ERROR_RECEIVE_CRC(7,R.string.illegal_crc);       //CRC校验错误
 
     private int code;
     private int desc;

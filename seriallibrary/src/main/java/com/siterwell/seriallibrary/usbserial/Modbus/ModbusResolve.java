@@ -6,14 +6,26 @@ package com.siterwell.seriallibrary.usbserial.Modbus;
 
 public class ModbusResolve {
 
+    public static byte[] receive_data;
     public final int FUNCTION_READ_COIL=1; //功能码：读取线圈寄存器
     public final int FUNCTION_READ_REGISTER = 3;//功能码:读取保存寄存器
     public final int FUNCTION_WRITE_COIL=5;//功能码：写线圈寄存器
     public final int FUNCTION_WRITE_REGISTER=6;//功能码:写保存寄存器
 
+    public final int MAX_READ_COIL = 2000; //线圈数量最大值
 
-    public ModbusResolve() {
+    public final int MAX_READ_REGISTER = 125; //寄存器数量最大值
+    private static ModbusResolve modbusResolve;
 
+    public static ModbusResolve getInstance() {
+        if (modbusResolve == null) {
+            synchronized (ModbusResolve.class) {
+                if (modbusResolve == null) {
+                    modbusResolve = new ModbusResolve();
+                }
+            }
+        }
+        return modbusResolve;
     }
 
     public byte[] SendReadcoil(int address,int start,int length){
@@ -79,6 +91,30 @@ public class ModbusResolve {
             send[4]=0;
             send[5]=0;
         }
+        byte[] crc=Algorithm.get_crc16(send,6);
+        send[6]=crc[0];
+        send[7]=crc[1];
+        return send;
+    }
+
+
+    /*
+    @method sendCommandOfWriteRegister
+    @autor TracyHenry
+    @time 2018/1/8 下午2:09
+    @email xuejunju_4595@qq.com
+     地址，寄存器地址，值
+    */
+    public byte[] sendCommandOfWriteRegister(int address,int register,int value){
+
+        byte[] send = new byte[8];
+        send[0]=Algorithm.toByteArray(address, 1)[0];
+        send[1]=FUNCTION_WRITE_REGISTER;
+        send[2]=Algorithm.toByteArray(register, 2)[1];
+        send[3]=Algorithm.toByteArray(register, 2)[0];
+        send[4]=Algorithm.toByteArray(value, 2)[1];
+        send[5]=Algorithm.toByteArray(value, 2)[0];
+
         byte[] crc=Algorithm.get_crc16(send,6);
         send[6]=crc[0];
         send[7]=crc[1];

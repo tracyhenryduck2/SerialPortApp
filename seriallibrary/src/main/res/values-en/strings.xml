@@ -5,4 +5,6 @@
     <string name="illegal_address">非法数据地址</string>
     <string name="illegal_data">非法数据值</string>
     <string name="slave_error">从机故障</string>
+    <string name="illegal_data_length">非法数据</string>
+    <string name="illegal_crc">CRC错误</string>
 </resources>
