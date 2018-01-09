@@ -1,8 +1,11 @@
 package com.siterwell.seriallibrary.usbserial.Modbus;
 
+import com.siterwell.seriallibrary.usbserial.util.HexDump;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -120,5 +123,18 @@ public class Algorithm {
           iOutcome += (bLoop & 0xFF) << (8 * i);
       }
       return iOutcome;
-  }  
+  }
+
+  public static void main(String args[]){
+//     byte[] ds = toByteArray(1322313132, 3);
+//
+//     for(int i=0;i<ds.length;i++){
+//         System.out.println(ds[i]);
+//     }
+      ArrayList<Byte> ds = new ArrayList<>();
+      byte ds4 = -84;
+      Byte ds2 = new Byte(String.valueOf(ds4));
+      byte ds3 = ds2.byteValue();
+      System.out.println(ds3);
+  }
 }

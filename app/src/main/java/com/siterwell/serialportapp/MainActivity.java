@@ -2,6 +2,7 @@ package com.siterwell.serialportapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
 
+import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialProber;
 import com.siterwell.seriallibrary.usbserial.util.HexDump;
@@ -129,7 +131,12 @@ public class MainActivity extends Activity {
                     return;
                 }
 
-                showConsoleActivity(driver);
+                ModbusResolve.getInstance().sDriver = driver;
+
+                final Intent intent = new Intent(MainActivity.this, SerialConsoleActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                MainActivity.this.startActivity(intent);
+
             }
         });
     }
@@ -196,8 +203,5 @@ public class MainActivity extends Activity {
         mProgressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void showConsoleActivity(UsbSerialDriver driver) {
-        SerialConsoleActivity.show(this, driver);
-    }
 
 }
