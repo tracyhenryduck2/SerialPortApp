@@ -67,7 +67,6 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
             try {
                 ModbusResolve.getInstance().sDriver.open();
                 ModbusResolve.getInstance().sDriver.setParameters(9600, 8, UsbSerialDriver.STOPBITS_1, UsbSerialDriver.PARITY_NONE);
-                Toast.makeText(this,"sDriver.open();",Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 Log.e(TAG, "Error setting up device: " + e.getMessage(), e);
 
