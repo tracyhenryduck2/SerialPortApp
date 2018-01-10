@@ -67,7 +67,7 @@ public class Config {
 //
 //			@Override
 //			public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-//				loginListener.loginFail(HekrCodeUtil.getErrorCode(i, bytes));
+//				loginListener.loginFail(CodeUtil.getErrorCode(i, bytes));
 //			}
 //		});
 //	}

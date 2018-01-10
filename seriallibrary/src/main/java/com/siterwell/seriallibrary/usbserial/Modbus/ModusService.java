@@ -2,7 +2,9 @@ package com.siterwell.seriallibrary.usbserial.Modbus;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by TracyHenry on 2018/1/9.
@@ -38,9 +41,9 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
     private SerialInputOutputManager mSerialIoManager;
     private int count;
-    private boolean flag_timer;
-    private final int MaX_INTERVAL = 500;  //最大时间间隔为500ms 表示500ms没收到数据则认为缓冲数据为一个完整的包
-
+    private AtomicBoolean flag_timer;
+    private final int MaX_INTERVAL = 100;  //最大时间间隔为500ms 表示500ms没收到数据则认为缓冲数据为一个完整的包
+    private static int ds = 0;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,10 +54,11 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
     @Override
     public void onCreate() {
         super.onCreate();
+        flag_timer = new AtomicBoolean(false);
         receive_data = new ArrayList<Byte>();
-//        timer = new Timer();
-//        myTimerTask = new MyTimerTask();
-//        timer.schedule(myTimerTask,0l);
+        timer = new Timer();
+        myTimerTask = new MyTimerTask();
+        timer.schedule(myTimerTask,0l,1l);
     }
 
     @Override
@@ -90,27 +94,41 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
         receive_data= null;
         EventBus.getDefault().unregister(this);
         stopIoManager();
+        if(timer!=null){
+            timer.cancel();
+            timer = null;
+        }
+        if(myTimerTask!=null){
+            myTimerTask = null;
+        }
+        if(handler!=null){
+            handler.removeCallbacks(null);
+        }
     }
 
     @Override
     public void onNewData(byte[] data) {
-        Log.i(TAG,"收到的数据为:"+ HexDump.dumpHexString(data));
-        count = 0;
-//        for(int i=0;i<data.length;i++){
-//            Byte ds2 = new Byte(String.valueOf(data[i]));
-//            receive_data.add(ds2);
-//        }
-        SerialReceiveEvent serialReceiveEvent = new SerialReceiveEvent();
-        serialReceiveEvent.setReceive_data(data);
-         EventBus.getDefault().post(serialReceiveEvent);
 
-        //Toast.makeText(this,HexDump.dumpHexString(data),Toast.LENGTH_LONG).show();
-        flag_timer = true;
+        synchronized (data){
+            Log.i(TAG,"收到的数据为:"+ HexDump.dumpHexString(data));
+
+            for(int i=0;i<data.length;i++){
+                Byte ds2 = new Byte(String.valueOf(data[i]));
+                receive_data.add(ds2);
+            }
+            SerialReceiveEvent serialReceiveEvent = new SerialReceiveEvent();
+            serialReceiveEvent.setReceive_data(data);
+            EventBus.getDefault().post(serialReceiveEvent);
+
+            flag_timer.set(true);
+        }
+
     }
 
     @Override
     public void onRunError(Exception e) {
 
+        e.printStackTrace();
     }
 
 
@@ -146,9 +164,10 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
         for(int i=0;i<ds.length;i++){
             ds2[i] = ds[i];
         }
-         Toast.makeText(this,"收到数据包："+HexDump.dumpHexString(ds2),Toast.LENGTH_LONG).show();
+         Toast.makeText(this,"收到数据包："+HexDump.toHexString(ds2),Toast.LENGTH_LONG).show();
 
         receive_data.clear();
+        flag_timer.set(false);
     }
 
 
@@ -156,14 +175,37 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
 
         @Override
         public void run() {
-           if(flag_timer){
+           if(flag_timer.get()){
                count ++;
                if(count>=MaX_INTERVAL){
                    count = 0;
-                   EventBus.getDefault().post(new PacketEndEvent());
+                   handler.sendEmptyMessage(1);
                }
 
            }
         }
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+
+                    if(receive_data.size()>0){
+                        ds ++;
+                        byte ds2[] = new byte[receive_data.size()];
+                        for(int i=0;i<receive_data.size();i++){
+                            ds2[i] = receive_data.get(i).byteValue();
+                        }
+                        Toast.makeText(ModusService.this,"收到数据包："+ds+"ds"+HexDump.toHexString(ds2),Toast.LENGTH_LONG).show();
+
+                        receive_data.clear();
+                        flag_timer.set(false);
+                    }
+
+                    break;
+            }
+        }
+    };
 }
