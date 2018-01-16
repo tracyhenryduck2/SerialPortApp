@@ -1,6 +1,9 @@
 package com.siterwell.seriallibrary.usbserial.Modbus;
 
+import android.content.Context;
+
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
+import com.siterwell.seriallibrary.usbserial.util.FunPath;
 
 /**
  * Created by TracyHenry on 2018/1/4.
@@ -33,7 +36,16 @@ public class ModbusResolve {
         return modbusResolve;
     }
 
-    public static byte[] SendReadcoil(int address,int start,int length){
+    private ModbusResolve() {
+
+    }
+
+
+    public void init(Context context){
+        FunPath.init(context,context.getPackageName());
+    }
+
+    public byte[] SendReadcoil(int address, int start, int length){
 
         byte[] send = new byte[8];
         send[0]=Algorithm.toByteArray(address, 1)[0];
@@ -57,7 +69,7 @@ public class ModbusResolve {
     @email xuejunju_4595@qq.com
     读取寄存器命令
     */
-    public static byte[] sendCommandOfReadRegister(int address,int start,int length){
+    public byte[] sendCommandOfReadRegister(int address,int start,int length){
         byte[] send = new byte[8];
         send[0]=Algorithm.toByteArray(address, 1)[0];
         send[1]=FUNCTION_READ_REGISTER;
@@ -79,7 +91,7 @@ public class ModbusResolve {
      * @param flag
      * @return
      */
-    public static byte[]  sendCommandOfWriteCoil(int address,int start,boolean flag){
+    public byte[]  sendCommandOfWriteCoil(int address,int start,boolean flag){
         byte[] send = new byte[8];
         send[0]=Algorithm.toByteArray(address, 1)[0];
         send[1]=FUNCTION_WRITE_COIL;
@@ -110,7 +122,7 @@ public class ModbusResolve {
     @email xuejunju_4595@qq.com
      地址，寄存器地址，值
     */
-    public static byte[] sendCommandOfWriteRegister(int address,int register,int value){
+    public byte[] sendCommandOfWriteRegister(int address,int register,int value){
 
         byte[] send = new byte[8];
         send[0]=Algorithm.toByteArray(address, 1)[0];
