@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 
+import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
 import com.siterwell.seriallibrary.usbserial.util.CrashHandler;
 
 
@@ -21,7 +22,7 @@ public class MyApplication extends Application {
         super.onCreate();
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
-
+        ModbusResolve.getInstance().init(this);
         mApp = this;
         this.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override

@@ -56,8 +56,8 @@ public class ModusService extends Service implements SerialInputOutputManager.Li
         super.onCreate();
         flag_timer = new AtomicBoolean(false);
         receive_data = new ArrayList<Byte>();
-        timer = new Timer();
-        myTimerTask = new MyTimerTask();
+        //timer = new Timer();
+        //myTimerTask = new MyTimerTask();
         timer.schedule(myTimerTask,0l,1l);
     }
 

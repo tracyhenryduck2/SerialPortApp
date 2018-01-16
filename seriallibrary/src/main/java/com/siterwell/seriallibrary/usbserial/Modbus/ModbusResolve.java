@@ -1,16 +1,28 @@
 package com.siterwell.seriallibrary.usbserial.Modbus;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.siterwell.seriallibrary.usbserial.bean.ModbusAddressBean;
+import com.siterwell.seriallibrary.usbserial.bean.TypeModbusAddress;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
+import com.siterwell.seriallibrary.usbserial.util.FileUtils;
 import com.siterwell.seriallibrary.usbserial.util.FunPath;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TracyHenry on 2018/1/4.
  */
 
 public class ModbusResolve {
-
+    private final static String TAG = "ModbusResolve";
     public static byte[] receive_data;
     public final static int FUNCTION_READ_COIL=1; //功能码：读取线圈寄存器
     public final static int FUNCTION_READ_REGISTER = 3;//功能码:读取保存寄存器
@@ -24,6 +36,9 @@ public class ModbusResolve {
     public UsbSerialDriver sDriver = null;
 
     private static ModbusResolve modbusResolve;
+
+    public static List<ModbusAddressBean> listcoil;
+    public static List<ModbusAddressBean> listregister;
 
     public static ModbusResolve getInstance() {
         if (modbusResolve == null) {
@@ -42,7 +57,49 @@ public class ModbusResolve {
 
 
     public void init(Context context){
+        listcoil = new ArrayList<ModbusAddressBean>();
+        listregister =new ArrayList<ModbusAddressBean>();
         FunPath.init(context,context.getPackageName());
+        load(context);
+
+    }
+
+
+    private void load(Context context) {
+        // 导入之前使用过的设备登录密码
+        try {
+            String path = FunPath.getMediaPath(context);
+            String addres  = path+ File.separator + "config.txt";
+            String text = FileUtils.readFromFile(addres);
+            Log.i(TAG,"读取到的文件内尔为："+text);
+            JSONObject jsonObject = new JSONObject(text);
+
+                JSONArray jsonObj_coil     = jsonObject.getJSONArray("coil");
+                JSONArray jsonObj_register = jsonObject.getJSONArray("register");
+
+                for(int i=0;i<jsonObj_coil.length();i++){
+                    ModbusAddressBean bean = new ModbusAddressBean();
+
+                    bean.setName(jsonObj_coil.getJSONObject(i).getString("name"));
+                    bean.setAddress(jsonObj_coil.getJSONObject(i).getInt("address"));
+                    bean.setType(TypeModbusAddress.TYPE_MODBUS_COIL);
+                    listcoil.add(bean);
+                }
+
+
+                for(int i=0;i<jsonObj_register.length();i++){
+                    ModbusAddressBean bean = new ModbusAddressBean();
+
+                    bean.setName(jsonObj_register.getJSONObject(i).getString("name"));
+                    bean.setAddress(jsonObj_register.getJSONObject(i).getInt("address"));
+                    bean.setType(TypeModbusAddress.TYPE_MODBUS_COIL);
+                    listregister.add(bean);
+                }
+
+                Log.i(TAG,"dddL:"+listcoil.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public byte[] SendReadcoil(int address, int start, int length){

@@ -195,7 +195,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             int time = t.hour * 10000 + t.minute * 100 + t.second;
             String fileName = "crash-" + date + "-" + time + CRASH_REPORTER_EXTENSION;
             if (isExistExternalStore()) {
-                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/serialcrash");
+                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +File.separator+ mContext.getPackageName());
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
