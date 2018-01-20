@@ -16,4 +16,5 @@
     <string name="dialog_btn_cancel">取消</string>
     <string name="dialog_title_alert">提示</string>
     <string name="loading">请稍候...</string>
+    <string name="tips">提示</string>
 </resources>
