@@ -22,8 +22,6 @@ public class SerialConsoleActivity extends Activity {
     private final String TAG = SerialConsoleActivity.class.getSimpleName();
 
     private ScrollView mScrollView;
-    private TextView mTitleTextView;
-    private TextView mDumpTextView;
     private Button mbtn_fasong;
     private byte[] ds = {0x01,0x02,0x03};
 
@@ -32,8 +30,6 @@ public class SerialConsoleActivity extends Activity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setContentView(R.layout.serial_console);
-        mTitleTextView = (TextView) findViewById(R.id.demoTitle);
-        mDumpTextView = (TextView) findViewById(R.id.consoleText);
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
         mbtn_fasong =(Button)findViewById(R.id.fasong);
         mbtn_fasong.setOnClickListener(new OnClickListener() {
@@ -67,13 +63,13 @@ public class SerialConsoleActivity extends Activity {
     private void updateReceivedData(byte[] data) {
         final String message = "Read " + data.length + " bytes: \n"
                 + HexDump.dumpHexString(data) + "\n\n";
-        mDumpTextView.append(message);
-        mScrollView.smoothScrollTo(0, mDumpTextView.getBottom());
+//        mDumpTextView.append(message);
+//        mScrollView.smoothScrollTo(0, mDumpTextView.getBottom());
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SerialReceiveEvent event) {
-        byte[] ds = event.getReceive_data();
-        updateReceivedData(ds);
+//        byte[] ds = event.getReceive_data();
+//        updateReceivedData(ds);
     }
 
 }
