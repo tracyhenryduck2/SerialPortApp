@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.siterwell.seriallibrary.usbserial.bean.ErrorReadCofig;
 import com.siterwell.seriallibrary.usbserial.bean.ModbusAddressBean;
 import com.siterwell.seriallibrary.usbserial.bean.TypeModbusAddress;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
@@ -11,6 +12,7 @@ import com.siterwell.seriallibrary.usbserial.util.FileUtils;
 import com.siterwell.seriallibrary.usbserial.util.FunPath;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -41,6 +43,7 @@ public class ModbusResolve {
 
     public static List<ModbusAddressBean> listcoil;
     public static List<ModbusAddressBean> listregister;
+    public ErrorReadCofig errorReadCofig;
 
     public static ModbusResolve getInstance() {
         if (modbusResolve == null) {
@@ -100,8 +103,13 @@ public class ModbusResolve {
                 }
 
                 Log.i(TAG,"dddL:"+listcoil.toString());
-        } catch (Exception e) {
+            errorReadCofig = ErrorReadCofig.Success;
+        } catch (NullPointerException e) {
             e.printStackTrace();
+            errorReadCofig = ErrorReadCofig.ERROR_READ_COFIG_NULL;
+        }catch (JSONException e){
+            e.printStackTrace();
+            errorReadCofig = ErrorReadCofig.ERROR_READ_COFIG_FORMAT;
         }
     }
 

@@ -17,4 +17,8 @@
     <string name="dialog_title_alert">提示</string>
     <string name="loading">请稍候...</string>
     <string name="tips">提示</string>
+    <string name="read_config_success">读取配置文件成功</string>
+    <string name="read_config_err_null">配置文件为空</string>
+    <string name="read_config_err_format">配置文件内容有误</string>
+
 </resources>

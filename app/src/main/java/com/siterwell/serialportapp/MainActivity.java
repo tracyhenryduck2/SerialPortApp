@@ -2,6 +2,7 @@ package com.siterwell.serialportapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
@@ -23,6 +24,9 @@ import android.widget.TwoLineListItem;
 
 
 import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
+import com.siterwell.seriallibrary.usbserial.bean.ErrorReadCofig;
+import com.siterwell.seriallibrary.usbserial.dialog.ECAlertDialog;
+import com.siterwell.seriallibrary.usbserial.dialog.ECProgressDialog;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialProber;
 import com.siterwell.seriallibrary.usbserial.event.InitSerialEvent;
@@ -143,6 +147,8 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        checkconfig();
     }
 
     @Override
@@ -157,6 +163,18 @@ public class MainActivity extends Activity {
         mHandler.removeMessages(MESSAGE_REFRESH);
     }
 
+    private void checkconfig(){
+         if(ModbusResolve.getInstance().errorReadCofig == ErrorReadCofig.ERROR_READ_COFIG_NULL){
+             ECAlertDialog ecAlertDialog = ECAlertDialog.buildAlert(this, ErrorReadCofig.ERROR_READ_COFIG_NULL.getDesc(),null, new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialogInterface, int i) {
+                       Intent intent = new Intent(MainActivity.this,ConfigEditActivity.class);
+                       startActivity(intent);
+                 }
+             });
+             ecAlertDialog.show();
+         }
+    }
 
     private void refreshDeviceList() {
         showProgressBar();

@@ -72,6 +72,12 @@
             android:label="SerialConsoleActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+
+        <activity
+            android:name=".ConfigEditActivity"
+            android:label="ConfigEditActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
