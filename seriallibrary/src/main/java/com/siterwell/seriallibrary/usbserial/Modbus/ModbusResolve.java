@@ -1,6 +1,7 @@
 package com.siterwell.seriallibrary.usbserial.Modbus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.siterwell.seriallibrary.usbserial.bean.ModbusAddressBean;
@@ -10,7 +11,6 @@ import com.siterwell.seriallibrary.usbserial.util.FileUtils;
 import com.siterwell.seriallibrary.usbserial.util.FunPath;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -32,6 +32,8 @@ public class ModbusResolve {
     public final static int MAX_READ_COIL = 2000; //线圈数量最大值
 
     public final static int MAX_READ_REGISTER = 125; //寄存器数量最大值
+
+    public final static int DEVICE_ADDRESS = 3; //写死设备地址为3
 
     public UsbSerialDriver sDriver = null;
 
@@ -61,7 +63,8 @@ public class ModbusResolve {
         listregister =new ArrayList<ModbusAddressBean>();
         FunPath.init(context,context.getPackageName());
         load(context);
-
+        Intent intent = new Intent(context, ModbusService.class);
+        context.startService(intent);
     }
 
 

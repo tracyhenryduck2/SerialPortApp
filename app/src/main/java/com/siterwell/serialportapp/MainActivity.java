@@ -25,7 +25,10 @@ import android.widget.TwoLineListItem;
 import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialProber;
+import com.siterwell.seriallibrary.usbserial.event.InitSerialEvent;
 import com.siterwell.seriallibrary.usbserial.util.HexDump;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,8 +133,9 @@ public class MainActivity extends Activity {
                     Log.d(TAG, "No driver.");
                     return;
                 }
-
-                ModbusResolve.getInstance().sDriver = driver;
+                InitSerialEvent initSerialEvent = new InitSerialEvent();
+                initSerialEvent.setUsbSerialDriver(driver);
+                EventBus.getDefault().post(initSerialEvent);
 
                 final Intent intent = new Intent(MainActivity.this, SerialConsoleActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);

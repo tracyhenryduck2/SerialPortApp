@@ -1,30 +1,20 @@
 package com.siterwell.serialportapp;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.siterwell.seriallibrary.usbserial.Modbus.ModusService;
-import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
 import com.siterwell.seriallibrary.usbserial.event.SerialReceiveEvent;
 import com.siterwell.seriallibrary.usbserial.event.SerialSendEvent;
 import com.siterwell.seriallibrary.usbserial.util.HexDump;
-import com.siterwell.seriallibrary.usbserial.util.SerialInputOutputManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class SerialConsoleActivity extends Activity {
@@ -40,8 +30,6 @@ public class SerialConsoleActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, ModusService.class);
-        startService(intent);
         EventBus.getDefault().register(this);
         setContentView(R.layout.serial_console);
         mTitleTextView = (TextView) findViewById(R.id.demoTitle);
@@ -74,8 +62,6 @@ public class SerialConsoleActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        Intent intent = new Intent(this,ModusService.class);
-        stopService(intent);
     }
 
     private void updateReceivedData(byte[] data) {

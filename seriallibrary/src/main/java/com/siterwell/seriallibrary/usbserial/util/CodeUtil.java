@@ -295,11 +295,9 @@ public class CodeUtil {
                 return "操作过于频繁,请稍候再试";
             case 400017:
                 return "今日操作已达上限";
-          /*  case 400014:
-                return "密码重置失败";*/
             default:
                 // return String.valueOf(errorCode);
-                return "服务器异常，请重新再试！" + errorCode;
+                return "未知异常，请重新再试！" + errorCode;
         }
     }
 

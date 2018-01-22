@@ -61,6 +61,8 @@ public class MyApplication extends Application {
             }
         });
         CrashHandler.getInstance().init(getApplicationContext());
+
+
     }
 
 

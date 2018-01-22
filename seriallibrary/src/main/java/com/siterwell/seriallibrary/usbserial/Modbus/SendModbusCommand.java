@@ -7,12 +7,11 @@ package com.siterwell.seriallibrary.usbserial.Modbus;
 public interface SendModbusCommand {
 
 
+        void ErrorSendCoil(ModbusErrcode modbusErrcode);
 
-        void sendCoil(int deivce_address, int address,boolean flag);
+        void ErrorReadCoil(ModbusErrcode modbusErrcode);
 
-        void sendRegister(int deivce_address,int address);
+        void ErrorSendRegister(ModbusErrcode modbusErrcode);
 
-        void SuccessSendCoil(byte[] reivce_data);
-
-        void ErrorSendCoil(byte[] reivce_data);
+        void ErrorReadRegister(ModbusErrcode modbusErrcode);
 }
