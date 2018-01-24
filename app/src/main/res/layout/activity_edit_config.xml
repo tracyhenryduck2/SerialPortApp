@@ -20,6 +20,7 @@
                     android:layout_height="wrap_content"
                     style="@style/CCPFontPreferenceSmall"
                     android:text="@string/param_coil"
+                    android:textColor="@color/red_btn_color_normal"
                     android:layout_marginBottom="@dimen/NormalPadding"/>
                 <View
                     android:layout_width="match_parent"
@@ -46,6 +47,7 @@
                     android:layout_height="wrap_content"
                     style="@style/CCPFontPreferenceSmall"
                     android:text="@string/param_register"
+                    android:textColor="@color/red_btn_color_normal"
                     android:layout_marginBottom="@dimen/NormalPadding"/>
                 <View
                     android:layout_width="match_parent"

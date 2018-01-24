@@ -27,7 +27,6 @@ import android.widget.TwoLineListItem;
 import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
 import com.siterwell.seriallibrary.usbserial.bean.ErrorReadCofig;
 import com.siterwell.seriallibrary.usbserial.dialog.ECAlertDialog;
-import com.siterwell.seriallibrary.usbserial.dialog.ECProgressDialog;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialDriver;
 import com.siterwell.seriallibrary.usbserial.driver.UsbSerialProber;
 import com.siterwell.seriallibrary.usbserial.event.InitSerialEvent;
@@ -152,7 +151,7 @@ public class MainActivity extends Activity {
         button_manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ConfigEditActivity.class);
+                Intent intent = new Intent(MainActivity.this,ConfigListActivity.class);
                 startActivity(intent);
             }
         });
@@ -176,7 +175,7 @@ public class MainActivity extends Activity {
              ECAlertDialog ecAlertDialog = ECAlertDialog.buildAlert(this, ErrorReadCofig.ERROR_READ_COFIG_NULL.getDesc(),null, new DialogInterface.OnClickListener() {
                  @Override
                  public void onClick(DialogInterface dialogInterface, int i) {
-                       Intent intent = new Intent(MainActivity.this,ConfigEditActivity.class);
+                       Intent intent = new Intent(MainActivity.this,ConfigListActivity.class);
                        startActivity(intent);
                  }
              });

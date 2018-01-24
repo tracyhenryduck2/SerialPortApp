@@ -123,5 +123,6 @@
     <declare-styleable name="SpinnerView">
         <attr name="Spinner_item" format="reference" />
         <attr name="Spinner_DropDownTitle" format="reference" />
+        <attr name="Spinner_hint" format="string"/>
     </declare-styleable>
 </resources>

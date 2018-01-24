@@ -1,10 +1,12 @@
 package com.siterwell.seriallibrary.usbserial.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by TracyHenry on 2018/1/16.
  */
 
-public class ModbusAddressBean {
+public class ModbusAddressBean implements Serializable{
     private int address;
     private String name;
     private TypeModbusAddress type;  //

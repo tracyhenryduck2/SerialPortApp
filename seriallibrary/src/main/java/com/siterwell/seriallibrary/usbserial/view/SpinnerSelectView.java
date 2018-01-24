@@ -20,6 +20,7 @@ public class SpinnerSelectView extends Button implements View.OnClickListener{
     private int mDropTitle;
     /**选中的模式位置*/
     private int mChoiceItemPosition;
+    private int hint;
 
     public SpinnerSelectView(Context context) {
         super(context);
@@ -42,9 +43,10 @@ public class SpinnerSelectView extends Button implements View.OnClickListener{
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SpinnerView, defStyle, 0);
         int items = typedArray.getResourceId(R.styleable.SpinnerView_Spinner_item ,-1);
         mDropTitle = typedArray.getResourceId(R.styleable.SpinnerView_Spinner_DropDownTitle ,-1);
+        hint =typedArray.getResourceId(R.styleable.SpinnerView_Spinner_hint,-1);
         typedArray.recycle();
 
-        mChoiceItemPosition = 0;
+        mChoiceItemPosition = -1;
 
         if(items > 0) {
             mItems = context.getResources().getStringArray(items);
@@ -52,6 +54,9 @@ public class SpinnerSelectView extends Button implements View.OnClickListener{
         }
         if(mDropTitle <= 0) {
             mDropTitle = R.string.tips;
+        }
+        if(mChoiceItemPosition<0 && hint > 0){
+            setText(hint);
         }
     }
 
@@ -87,5 +92,9 @@ public class SpinnerSelectView extends Button implements View.OnClickListener{
             return ;
         }
         Log.e(TAG , "show DropDownView error , items null");
+    }
+
+    public void setmChoiceItemPosition(int mChoiceItemPosition) {
+        this.mChoiceItemPosition = mChoiceItemPosition;
     }
 }

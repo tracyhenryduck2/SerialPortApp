@@ -1,18 +1,19 @@
 package com.siterwell.serialportapp;
 
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ScrollView;
 
 import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
 import com.siterwell.seriallibrary.usbserial.bean.ModbusAddressBean;
+import com.siterwell.seriallibrary.usbserial.bean.TypeModbusAddress;
 import com.siterwell.seriallibrary.usbserial.dialog.ECAlertDialog;
 import com.siterwell.seriallibrary.usbserial.util.TopbarSuperActivity;
 import com.siterwell.seriallibrary.usbserial.util.UtilTools;
+import com.siterwell.seriallibrary.usbserial.view.SpinnerSelectView;
 import com.siterwell.serialportapp.adapter.ModbusAdapter;
 
 import java.util.List;
@@ -23,73 +24,71 @@ import java.util.List;
 
 public class ConfigEditActivity extends TopbarSuperActivity {
     private static final String TAG = ConfigEditActivity.class.getName();
-    private List<ModbusAddressBean> list;
-    private List<ModbusAddressBean> list_register;
-    private ModbusAdapter modbusAdapter;
-    private ModbusAdapter modbusAdapter_reg;
-    private ListView listView_coil;
-    private ListView listView_register;
-    private ECAlertDialog alertDialog;
-    private ScrollView scrollView;
-
+    private EditText editText_name;
+    private EditText editText_address;
+    private SpinnerSelectView spinnerSelectView;
+    private TypeModbusAddress typeModbusAddress;
+    private ModbusAddressBean modbusAddressBean;
+    private ECAlertDialog ecAlertDialog;
     @Override
     protected void onCreateInit() {
-        getTopBarView().setTopBarStatus(R.drawable.back, getResources().getString(R.string.add), "编辑配置文件", 1, new View.OnClickListener() {
+        initdata();
+        getTopBarView().setTopBarStatus(R.drawable.back, getResources().getString(R.string.ok), modbusAddressBean == null ? getResources().getString(R.string.add_config) : getResources().getString(R.string.edit_config), 1, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlert();
+                submit();
             }
-        },R.color.blue);
-        scrollView = (ScrollView)findViewById(R.id.demoScroller);
-        listView_coil = (ListView)findViewById(R.id.coillist);
-
-        listView_register = (ListView)findViewById(R.id.registerlist);
-
-        list = ModbusResolve.getInstance().listcoil;
-        list_register = ModbusResolve.getInstance().listregister;
-        Log.i(TAG,list.get(0).getName());
-        modbusAdapter = new ModbusAdapter(list,this);
-        modbusAdapter_reg = new ModbusAdapter(list_register,this);
-        listView_coil.setAdapter(modbusAdapter);
-        listView_register.setAdapter(modbusAdapter_reg);
-
-        UtilTools.setListViewHeightBasedOnChildren(listView_coil);
-        UtilTools.setListViewHeightBasedOnChildren(listView_register);
+        }, R.color.blue);
+        editText_name = (EditText)findViewById(R.id.tet);
+        editText_address = (EditText)findViewById(R.id.tet2);
+        spinnerSelectView = (SpinnerSelectView)findViewById(R.id.spinner_type);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_edit_config;
+        return R.layout.activity_edit_modbus;
     }
 
 
-    private void showAlert(){
-
-        alertDialog = ECAlertDialog.buildAlert(ConfigEditActivity.this, getResources().getString(R.string.add),getResources().getString(R.string.cancel),getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+    private void initdata(){
+        modbusAddressBean = (ModbusAddressBean)getIntent().getSerializableExtra("modebusbean");
+    }
 
 
-
-            }
-        });
-        alertDialog.setContentView(R.layout.edit_modbus);
-        alertDialog.setTitle(getResources().getString(R.string.add));
-        EditText text = (EditText) alertDialog.getContent().findViewById(R.id.tet);
+    private void submit(){
 
 
-        alertDialog.show();
+        if(spinnerSelectView.getChoiceItemPosition()==-1){
+            ecAlertDialog = ECAlertDialog.buildPositiveAlert(this,R.string.please_choose_type,null);
+            ecAlertDialog.show();
+            return;
+        }
 
+        if(TextUtils.isEmpty(editText_name.getText().toString().trim())){
+            ecAlertDialog = ECAlertDialog.buildPositiveAlert(this,R.string.name_is_null,null);
+            ecAlertDialog.show();
+            return;
+        }
 
+        if(TextUtils.isEmpty(editText_address.getText().toString().trim())){
+            ecAlertDialog = ECAlertDialog.buildPositiveAlert(this,R.string.address_is_null,null);
+            ecAlertDialog.show();
+            return;
+        }
+
+        ModbusAddressBean modbusAddressBean = new ModbusAddressBean();
+        modbusAddressBean.setType(spinnerSelectView.getChoiceItemPosition()==0?TypeModbusAddress.TYPE_MODBUS_COIL:TypeModbusAddress.TYPE_MODBUS_REGISTER);
+        modbusAddressBean.setName(editText_name.getText().toString().trim());
+        modbusAddressBean.setAddress(Integer.parseInt(editText_address.getText().toString().trim()));
+
+        Intent intent = new Intent();
+        intent.putExtra("modbus",modbusAddressBean);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
