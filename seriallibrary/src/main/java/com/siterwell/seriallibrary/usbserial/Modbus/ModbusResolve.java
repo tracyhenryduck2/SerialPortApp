@@ -41,8 +41,8 @@ public class ModbusResolve {
 
     private static ModbusResolve modbusResolve;
 
-    public static List<ModbusAddressBean> listcoil;
-    public static List<ModbusAddressBean> listregister;
+    public List<ModbusAddressBean> listcoil;
+    public List<ModbusAddressBean> listregister;
     public ErrorReadCofig errorReadCofig;
 
     public static ModbusResolve getInstance() {

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
     private ListView mListView;
     private TextView mProgressBarTitle;
     private ProgressBar mProgressBar;
+    private Button button_manage;
 
     private static final int MESSAGE_REFRESH = 101;
     private static final long REFRESH_TIMEOUT_MILLIS = 5000;
@@ -93,7 +95,7 @@ public class MainActivity extends Activity {
         mListView = (ListView) findViewById(R.id.deviceList);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mProgressBarTitle = (TextView) findViewById(R.id.progressBarTitle);
-
+        button_manage = (Button)findViewById(R.id.manage);
         mAdapter = new ArrayAdapter<DeviceEntry>(this, android.R.layout.simple_expandable_list_item_2, mEntries) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -147,7 +149,13 @@ public class MainActivity extends Activity {
 
             }
         });
-
+        button_manage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ConfigEditActivity.class);
+                startActivity(intent);
+            }
+        });
         checkconfig();
     }
 

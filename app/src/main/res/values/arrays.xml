@@ -1,0 +1,6 @@
+<resources>
+    <array name="choose_type">
+        <item>线圈</item>
+        <item>寄存器</item>
+    </array>
+</resources>

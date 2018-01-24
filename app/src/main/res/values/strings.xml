@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">SerialPortApp</string>
     <string name="refreshing">Refreshing...</string>
+    <string name="add_name">设置名称</string>
+    <string name="add_address">设置地址</string>
+    <string name="please_input_name">请输入名称</string>
+    <string name="please_input_address">请输入地址</string>
+    <string name="add">添加</string>
+    <string name="cancel">取消</string>
+    <string name="choose_type">选择类型</string>
+    <string name="ok">确定</string>
+    <string name="manage">管理</string>
+    <string name="param_coil">线圈参数</string>
+    <string name="param_register">寄存器参数</string>
 </resources>

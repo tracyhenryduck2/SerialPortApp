@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:gravity="center"
     android:descendantFocusability="blocksDescendants"
-    android:background="@color/white"
+    android:background="@drawable/list_item_selector"
     android:paddingLeft="@dimen/NormalPadding"
     android:paddingRight="@dimen/NormalPadding"
     android:layout_height="@dimen/modle_item_height"
@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left|center"
+
             android:minHeight="@dimen/SmallListHeight"
             android:paddingLeft="@dimen/SmallPadding"
             android:orientation="vertical">
@@ -31,7 +32,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="ddd"/>
             <TextView
                 android:id="@+id/sub_title"
                 style="@style/CCPFontPreferenceLarge"
@@ -39,6 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:textColor="@color/text_content"
+                android:text="ddd"
+                android:visibility="gone"
                 android:singleLine="true" />
 
         </LinearLayout>
@@ -59,18 +63,11 @@
                 android:paddingRight="@dimen/SmallPadding"
                 android:paddingTop="@dimen/SmallPadding"
                 android:singleLine="true"
-                android:visibility="visible"
                 android:textColor="@color/text_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="online"
                 android:layout_marginRight="@dimen/NormalPadding" />
 
         </LinearLayout>
-        <View
-        android:id="@+id/item_bottom_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/list_divider" />
-        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
