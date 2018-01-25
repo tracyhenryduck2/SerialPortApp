@@ -1,0 +1,6 @@
+<resources>
+    <array name="modbus_data_type">
+        <item>线圈</item>
+        <item>寄存器</item>
+    </array>
+</resources>

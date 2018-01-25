@@ -77,7 +77,7 @@ public class ModbusResolve {
             String path = FunPath.getMediaPath(context);
             String addres  = path+ File.separator + "config.txt";
             String text = FileUtils.readFromFile(addres);
-            Log.i(TAG,"读取到的文件内尔为："+text);
+            Log.i(TAG,"读取到的文件为："+text);
             JSONObject jsonObject = new JSONObject(text);
 
                 JSONArray jsonObj_coil     = jsonObject.getJSONArray("coil");
@@ -87,7 +87,7 @@ public class ModbusResolve {
                     ModbusAddressBean bean = new ModbusAddressBean();
 
                     bean.setName(jsonObj_coil.getJSONObject(i).getString("name"));
-                    bean.setAddress(jsonObj_coil.getJSONObject(i).getInt("address"));
+                    bean.setAddress(i+1);
                     bean.setType(TypeModbusAddress.TYPE_MODBUS_COIL);
                     listcoil.add(bean);
                 }
@@ -97,7 +97,7 @@ public class ModbusResolve {
                     ModbusAddressBean bean = new ModbusAddressBean();
 
                     bean.setName(jsonObj_register.getJSONObject(i).getString("name"));
-                    bean.setAddress(jsonObj_register.getJSONObject(i).getInt("address"));
+                    bean.setAddress(i+1);
                     bean.setType(TypeModbusAddress.TYPE_MODBUS_COIL);
                     listregister.add(bean);
                 }
@@ -204,5 +204,36 @@ public class ModbusResolve {
         send[6]=crc[0];
         send[7]=crc[1];
         return send;
+    }
+
+    public void saveList(Context context,List<ModbusAddressBean> listcoil,List<ModbusAddressBean> listreg){
+        try {
+        this.listcoil = listcoil;
+        this.listregister = listreg;
+        JSONArray jsonObject = new JSONArray();
+        for(int i=0;i<this.listcoil.size();i++){
+                JSONObject jsonObject1 = new JSONObject();
+                jsonObject1.put("name",this.listcoil.get(i).getName());
+                jsonObject.put(jsonObject1);
+        }
+
+
+            JSONArray jsonObject2 = new JSONArray();
+            for(int i=0;i<this.listregister.size();i++){
+                JSONObject jsonObject3 = new JSONObject();
+                jsonObject3.put("name",this.listregister.get(i).getName());
+                jsonObject2.put(jsonObject3);
+            }
+
+            JSONObject jsonObject_al = new JSONObject();
+            jsonObject_al.put("coil",jsonObject);
+            jsonObject_al.put("register",jsonObject2);
+            String path = FunPath.getMediaPath(context);
+            String addres  = path+ File.separator + "config.txt";
+            FileUtils.saveToFile(addres,jsonObject_al.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

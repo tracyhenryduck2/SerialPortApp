@@ -180,6 +180,14 @@ public class MainActivity extends Activity {
                  }
              });
              ecAlertDialog.show();
+         }else if(ModbusResolve.getInstance().errorReadCofig==ErrorReadCofig.ERROR_READ_COFIG_FORMAT){
+             ECAlertDialog ecAlertDialog = ECAlertDialog.buildAlert(this, ErrorReadCofig.ERROR_READ_COFIG_FORMAT.getDesc(),null, new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialogInterface, int i) {
+
+                 }
+             });
+             ecAlertDialog.show();
          }
     }
 

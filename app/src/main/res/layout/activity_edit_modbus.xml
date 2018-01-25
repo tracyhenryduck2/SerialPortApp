@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:id="@+id/title"
         android:padding="@dimen/NormalPadding">
         <TextView
             android:layout_width="wrap_content"
@@ -22,7 +23,7 @@
   <com.siterwell.seriallibrary.usbserial.view.SpinnerSelectView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:Spinner_item="@array/choose_type"
+      app:Spinner_item="@array/modbus_data_type"
       app:Spinner_DropDownTitle="@string/choose_type"
       app:Spinner_hint="@string/click_to_choose"
       android:id="@+id/spinner_type"/>
@@ -51,29 +52,4 @@
     android:inputType="text"
     android:hint="@string/please_input_name"
     android:id="@+id/tet"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/NormalPadding">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/CCPFontPreferenceSmall"
-            android:text="@string/add_address"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/list_divider"/>
-    </LinearLayout>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:textColor="@color/black"
-        android:padding="@dimen/NormalPadding"
-        android:digits="123456789"
-        android:inputType="number"
-        android:hint="@string/please_input_address"
-        android:id="@+id/tet2"/>
 </LinearLayout>

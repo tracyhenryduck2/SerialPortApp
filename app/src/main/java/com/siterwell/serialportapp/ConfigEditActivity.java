@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.siterwell.seriallibrary.usbserial.Modbus.ModbusResolve;
@@ -25,9 +26,7 @@ import java.util.List;
 public class ConfigEditActivity extends TopbarSuperActivity {
     private static final String TAG = ConfigEditActivity.class.getName();
     private EditText editText_name;
-    private EditText editText_address;
     private SpinnerSelectView spinnerSelectView;
-    private TypeModbusAddress typeModbusAddress;
     private ModbusAddressBean modbusAddressBean;
     private ECAlertDialog ecAlertDialog;
     @Override
@@ -45,8 +44,15 @@ public class ConfigEditActivity extends TopbarSuperActivity {
             }
         }, R.color.blue);
         editText_name = (EditText)findViewById(R.id.tet);
-        editText_address = (EditText)findViewById(R.id.tet2);
         spinnerSelectView = (SpinnerSelectView)findViewById(R.id.spinner_type);
+      if(modbusAddressBean!=null){
+            editText_name.setText(modbusAddressBean.getName());
+            editText_name.setSelection(modbusAddressBean.getName().length());
+            spinnerSelectView.setmChoiceItemPosition(modbusAddressBean.getType().getCode());
+            spinnerSelectView.setEnabled(false);
+
+        }
+
     }
 
     @Override
@@ -75,19 +81,14 @@ public class ConfigEditActivity extends TopbarSuperActivity {
             return;
         }
 
-        if(TextUtils.isEmpty(editText_address.getText().toString().trim())){
-            ecAlertDialog = ECAlertDialog.buildPositiveAlert(this,R.string.address_is_null,null);
-            ecAlertDialog.show();
-            return;
+        ModbusAddressBean modbusAddressBean2 = new ModbusAddressBean();
+        modbusAddressBean2.setType(spinnerSelectView.getChoiceItemPosition()==0?TypeModbusAddress.TYPE_MODBUS_COIL:TypeModbusAddress.TYPE_MODBUS_REGISTER);
+        modbusAddressBean2.setName(editText_name.getText().toString().trim());
+        if(modbusAddressBean!=null){
+            modbusAddressBean2.setAddress(modbusAddressBean.getAddress());
         }
-
-        ModbusAddressBean modbusAddressBean = new ModbusAddressBean();
-        modbusAddressBean.setType(spinnerSelectView.getChoiceItemPosition()==0?TypeModbusAddress.TYPE_MODBUS_COIL:TypeModbusAddress.TYPE_MODBUS_REGISTER);
-        modbusAddressBean.setName(editText_name.getText().toString().trim());
-        modbusAddressBean.setAddress(Integer.parseInt(editText_address.getText().toString().trim()));
-
         Intent intent = new Intent();
-        intent.putExtra("modbus",modbusAddressBean);
+        intent.putExtra("modbus",modbusAddressBean2);
         setResult(RESULT_OK, intent);
         finish();
     }
