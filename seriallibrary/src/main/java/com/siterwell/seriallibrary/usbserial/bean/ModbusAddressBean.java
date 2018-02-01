@@ -10,6 +10,7 @@ public class ModbusAddressBean implements Serializable{
     private int address;
     private String name;
     private TypeModbusAddress type;  //
+    private int data = -1;
 
     public int getAddress() {
         return address;
@@ -35,12 +36,21 @@ public class ModbusAddressBean implements Serializable{
         this.type = type;
     }
 
+    public int getData() {
+        return data;
+    }
+
+    public void setData(int data) {
+        this.data = data;
+    }
+
     @Override
     public String toString() {
         return "ModbusAddressBean{" +
                 "address=" + address +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", data=" + data +
                 '}';
     }
 }

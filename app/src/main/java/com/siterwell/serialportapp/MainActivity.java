@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
                 initSerialEvent.setUsbSerialDriver(driver);
                 EventBus.getDefault().post(initSerialEvent);
 
-                final Intent intent = new Intent(MainActivity.this, SerialConsoleActivity.class);
+                final Intent intent = new Intent(MainActivity.this, DataListConsoleActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 MainActivity.this.startActivity(intent);
 

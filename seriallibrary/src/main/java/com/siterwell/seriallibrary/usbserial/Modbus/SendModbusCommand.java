@@ -7,11 +7,8 @@ package com.siterwell.seriallibrary.usbserial.Modbus;
 public interface SendModbusCommand {
 
 
-        void ErrorSendCoil(ModbusErrcode modbusErrcode);
-
         void ErrorReadCoil(ModbusErrcode modbusErrcode);
 
-        void ErrorSendRegister(ModbusErrcode modbusErrcode);
 
         void ErrorReadRegister(ModbusErrcode modbusErrcode);
 }

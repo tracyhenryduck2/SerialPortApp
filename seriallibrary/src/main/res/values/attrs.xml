@@ -26,6 +26,7 @@
     
     <declare-styleable name="setting_info">
         <attr name="item_titleText" format="string" />
+        <attr name="item_subTitleText" format="string" />
         <attr name="item_detailText" format="string" />
         <attr name="item_accessoryType">
             <enum name="none" value="0" />

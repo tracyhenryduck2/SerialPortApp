@@ -44,7 +44,7 @@ public class ModbusResolve {
     public List<ModbusAddressBean> listcoil;
     public List<ModbusAddressBean> listregister;
     public ErrorReadCofig errorReadCofig;
-
+    private SendModbusCommand sendModbusCommand;
     public static ModbusResolve getInstance() {
         if (modbusResolve == null) {
             synchronized (ModbusResolve.class) {
@@ -113,7 +113,7 @@ public class ModbusResolve {
         }
     }
 
-    public byte[] SendReadcoil(int address, int start, int length){
+    public byte[] sendReadcoil(int address, int start, int length){
 
         byte[] send = new byte[8];
         send[0]=Algorithm.toByteArray(address, 1)[0];
@@ -235,5 +235,105 @@ public class ModbusResolve {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 解析收到的读线圈信息
+     */
+    public ModbusErrcode checkReceiveReadCoil(byte[] data){
+
+        byte[] data1 = {0x03,0x01,0x02,0x03,0x01};
+
+        try{
+            if(data1.length == 3){
+                if(data1[0]!=DEVICE_ADDRESS) return ModbusErrcode.ERROR_UNKNOW;
+                else if(data1[1]!=FUNCTION_READ_COIL) return ModbusErrcode.ERROR_UNKNOW;
+                else{
+                    int code = data1[2];
+                    return ModbusErrcode.getErrorStr(code);
+                }
+            }else{
+                if(data1[0]!=DEVICE_ADDRESS) return ModbusErrcode.ERROR_UNKNOW;
+                else if(data1[1]!=FUNCTION_READ_COIL) return ModbusErrcode.ERROR_UNKNOW;
+                else {
+                    int leng1 = data1[2];
+                    if(data1.length!=leng1+3){
+                        return ModbusErrcode.ERROR_UNKNOW;
+                    }else {
+
+                        if((listcoil.size()%8==0&&(leng1 == (listcoil.size()/8)))
+                                || listcoil.size()%8!=0&&(leng1 == (listcoil.size()/8+1))){
+
+                            for(int i=0;i<listcoil.size();i++){
+                                int d = i/8;
+                                byte x = (byte)((0x01 << (i%8)) & data1[3+d]);
+                                if(x!=0){
+                                    ModbusResolve.getInstance().listcoil.get(i).setData(1);
+                                }else{
+                                    ModbusResolve.getInstance().listcoil.get(i).setData(0);
+                                }
+                            }
+                        }else {
+                            return ModbusErrcode.ERROR_UNKNOW;
+                        }
+
+
+
+
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+        return ModbusErrcode.ERROR_NORMAL;
+    }
+
+
+    /**
+     * 解析收到的读线圈信息
+     */
+    public ModbusErrcode checkReceiveReadRegister(byte[] data){
+
+
+        try{
+            if(data.length == 3){
+                if(data[0]!=DEVICE_ADDRESS) return ModbusErrcode.ERROR_UNKNOW;
+                else if(data[1]!=FUNCTION_READ_COIL) return ModbusErrcode.ERROR_UNKNOW;
+                else{
+                    int code = data[2];
+                    return ModbusErrcode.getErrorStr(code);
+                }
+            }else{
+                if(data[0]!=DEVICE_ADDRESS) return ModbusErrcode.ERROR_UNKNOW;
+                else if(data[1]!=FUNCTION_READ_COIL) return ModbusErrcode.ERROR_UNKNOW;
+                else {
+
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+        return ModbusErrcode.ERROR_NORMAL;
+    }
+
+    public SendModbusCommand getSendModbusCommand() {
+        return sendModbusCommand;
+    }
+
+    public void addSendModbusCommandListenr(SendModbusCommand sendModbusCommand) {
+        this.sendModbusCommand = sendModbusCommand;
+    }
+
+    public void removeSendModbusCommandListenr(){
+         this.sendModbusCommand = null;
     }
 }

@@ -11,7 +11,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/NormalPadding"
         android:layout_marginRight="@dimen/NormalPadding"
-        android:text="@string/manage"
+        android:text="@string/config"
         android:id="@+id/manage"/>
 
     <TextView

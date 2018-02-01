@@ -37,10 +37,13 @@ public class ModbusService extends Service implements SerialInputOutputManager.L
     private static ArrayList<Byte> receive_data;
     private Timer timer;
     private MyTimerTask myTimerTask;
+    private Timer timer_read;
+    private ModbusReadTimerTask modbusReadTimerTask;
     private final String TAG = ModbusService.class.getName();
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
     private SerialInputOutputManager mSerialIoManager;
-    private int count;
+    private int count;    //用来做接收数据的分包标识
+    private int count_data; //用来做分包发送线圈和寄存器命令；
     private AtomicBoolean flag_timer;
     private final int MaX_INTERVAL = 100;  //最大时间间隔为500ms 表示500ms没收到数据则认为缓冲数据为一个完整的包
     @Nullable
@@ -56,8 +59,11 @@ public class ModbusService extends Service implements SerialInputOutputManager.L
         flag_timer = new AtomicBoolean(false);
         receive_data = new ArrayList<Byte>();
         timer = new Timer();
+        timer_read=new Timer();
         myTimerTask = new MyTimerTask();
+        modbusReadTimerTask = new ModbusReadTimerTask();
         timer.schedule(myTimerTask,0l,1l);
+        timer_read.schedule(modbusReadTimerTask,20000l,20000l);
     }
 
     @Override
@@ -209,10 +215,52 @@ public class ModbusService extends Service implements SerialInputOutputManager.L
 
                         receive_data.clear();
                         flag_timer.set(false);
+                        if(count_data%2==1){
+                            ModbusErrcode modbusErrcode = ModbusResolve.getInstance().checkReceiveReadCoil(ds2);
+                            if(ModbusResolve.getInstance().getSendModbusCommand()!=null){
+                                ModbusResolve.getInstance().getSendModbusCommand().ErrorReadCoil(modbusErrcode);
+                            }
+                        }else{
+
+                        }
+
                     }
 
                     break;
+
+                case 2:
+                    if(ModbusResolve.getInstance().listcoil!=null && ModbusResolve.getInstance().listcoil.size()>0){
+                        byte[] data_coil = ModbusResolve.getInstance().sendReadcoil(ModbusResolve.DEVICE_ADDRESS,ModbusResolve.getInstance().listcoil.get(0).getAddress(),ModbusResolve.getInstance().listcoil.size());
+                        SerialSendEvent serialSendEvent = new SerialSendEvent();
+                        serialSendEvent.setContent(data_coil);
+                        EventBus.getDefault().post(serialSendEvent);
+                    }
+
+                    break;
+                case 3:
+                    if(ModbusResolve.getInstance().listregister!=null && ModbusResolve.getInstance().listregister.size()>0) {
+                        byte[] data_register =   ModbusResolve.getInstance().sendCommandOfReadRegister(ModbusResolve.DEVICE_ADDRESS, ModbusResolve.getInstance().listregister.get(0).getAddress(), ModbusResolve.getInstance().listregister.size());
+                        SerialSendEvent serialSendEvent = new SerialSendEvent();
+                        serialSendEvent.setContent(data_register);
+                        EventBus.getDefault().post(serialSendEvent);
+                      }
+                      break;
             }
         }
     };
+
+
+    private class  ModbusReadTimerTask extends TimerTask{
+
+        @Override
+        public void run() {
+                count_data ++;
+                if(count_data%2==1){
+                    handler.sendEmptyMessage(2);
+                }else{
+                    handler.sendEmptyMessage(3);
+                }
+
+        }
+    }
 }

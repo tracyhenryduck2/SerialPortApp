@@ -83,6 +83,11 @@
             android:name=".ConfigEditActivity"
             android:label="@string/add_config"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".DataListConsoleActivity"
+            android:label="@string/data_list"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
